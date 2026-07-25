@@ -1,9 +1,11 @@
 import express from "express";
 import mongoose from "mongoose";
 import cors from "cors";
-import User from "./user.model.js";
+import dotenv from "dotenv";
 import dns from "dns";
+import User from "./user.model.js";
 
+dotenv.config({ path: "./.env" });
 dns.setServers(["1.1.1.1", "8.8.8.8"]);
 // college network block srv lookup so we need to set dns servers to public dns servers like cloudflare and google
 
@@ -14,9 +16,7 @@ app.use(express.json()); // middleware because we cannot directly send json data
 app.use(express.static("./"));
 
 mongoose
-  .connect(
-    "mongodb+srv://admin:Gems1234@cluster0.33eolq0.mongodb.net/?appName=Cluster0",
-  )
+  .connect(process.env.MONGO_URI)
   .then(() => {
     console.log("MongoDB connected");
     app.listen(3000, () => {
