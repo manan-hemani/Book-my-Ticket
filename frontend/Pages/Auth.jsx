@@ -1,6 +1,6 @@
 // import React, { useState } from "react";
 import { useState } from "react";
-import { registerUser, loginUser } from "../src/Scripts/api";
+import { registerUser, loginUser } from "../api";
 import { toast } from "react-toastify";
 
 const Auth = ({ setCurrentUser, setActivePage }) => {

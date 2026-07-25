@@ -1,6 +1,6 @@
 // import React from 'react'
 import { useState, useEffect } from "react";
-import { getUser, updateUser, deleteUser } from "../src/Scripts/api";
+import { getUser, updateUser, deleteUser } from "../api";
 
 const Profile = ({ currentUser, setCurrentUser, setActivePage }) => {
   const [formData, setFormData] = useState({
