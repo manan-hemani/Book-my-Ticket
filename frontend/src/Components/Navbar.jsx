@@ -1,7 +1,14 @@
 // import React from "react";
+import { useState } from "react";
 import logo from "../assets/logo.png";
 
 const Navbar = ({ setActivePage, currentUser }) => {
+  const [isNavOpen, setIsNavOpen] = useState(false);
+
+  const toggleNav = () => {
+    setIsNavOpen(!isNavOpen);
+  };
+
   return (
     <>
       <nav className="sticky top-0 z-40 bg-white/95 border-b border-gray-200 backdrop-blur">
@@ -20,31 +27,45 @@ const Navbar = ({ setActivePage, currentUser }) => {
           <button
             className="nav-toggle block md:hidden text-xl bg-transparent border-none"
             aria-label="Toggle navigation"
-            onclick="toggleNav()"
+            onClick={toggleNav}
           >
             ☰
           </button>
-          <ul className="nav-links hidden md:flex list-none gap-4 items-center">
+          <ul
+            className={`nav-links list-none gap-2 items-center ${isNavOpen ? "flex flex-row absolute top-12 left-0 w-full bg-white p-2 " : "hidden"} md:flex md:static md:flex-row`}
+          >
             <button
-              onClick={() => setActivePage("home")}
+              onClick={() => {
+                setActivePage("home");
+                setIsNavOpen(false);
+              }}
               className="hover:text-amber-500 cursor-pointer"
             >
               Home
             </button>
             <button
-              onClick={() => setActivePage("about")}
+              onClick={() => {
+                setActivePage("about");
+                setIsNavOpen(false);
+              }}
               className="hover:text-amber-500 cursor-pointer"
             >
               About
             </button>
             <button
-              onClick={() => setActivePage("events")}
+              onClick={() => {
+                setActivePage("events");
+                setIsNavOpen(false);
+              }}
               className="hover:text-amber-500 cursor-pointer"
             >
               Events
             </button>
             <button
-              onClick={() => setActivePage("contact")}
+              onClick={() => {
+                setActivePage("contact");
+                setIsNavOpen(false);
+              }}
               className="hover:text-amber-500 cursor-pointer"
             >
               Contact
@@ -52,13 +73,19 @@ const Navbar = ({ setActivePage, currentUser }) => {
             {currentUser ? (
               <span
                 className="ml-auto font-semibold text-amber-600 cursor-pointer"
-                onClick={() => setActivePage("profile")}
+                onClick={() => {
+                  setActivePage("profile");
+                  setIsNavOpen(false);
+                }}
               >
                 Welcome, {currentUser.fullName}
               </span>
             ) : (
               <button
-                onClick={() => setActivePage("auth")}
+                onClick={() => {
+                  setActivePage("auth");
+                  setIsNavOpen(false);
+                }}
                 className="ml-auto cursor-pointer hover:text-amber-500"
               >
                 Login / Register

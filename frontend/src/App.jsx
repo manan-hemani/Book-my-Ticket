@@ -41,13 +41,14 @@ function App() {
   };
   return (
     <>
-      <ToastContainer />
-      <Navbar setActivePage={setActivePage} currentUser={currentUser} />
-      {renderPage()}
-      <Footer />
+      <div className="min-h-screen flex flex-col">
+        <ToastContainer />
+        <Navbar setActivePage={setActivePage} currentUser={currentUser} />
+        <main className="flex-1">{renderPage()}</main>
+        <Footer />
+      </div>
     </>
   );
 }
 
 export default App;
-
