@@ -1,6 +1,7 @@
 // import React from 'react'
 import { useState, useEffect } from "react";
 import { getUser, updateUser, deleteUser } from "../api";
+import {toast} from "react-toastify";
 
 const Profile = ({ currentUser, setCurrentUser, setActivePage }) => {
   const [formData, setFormData] = useState({
@@ -29,13 +30,13 @@ const Profile = ({ currentUser, setCurrentUser, setActivePage }) => {
 
   const handleUpdate = async () => {
     const res = await updateUser(currentUser._id, formData);
-    alert(res.message);
+    toast.success(res.message);
     setCurrentUser(res.user);
   };
 
   const handleDelete = async () => {
     const res = await deleteUser(currentUser._id);
-    alert(res.message);
+    toast.success(res.message);
     setCurrentUser(null);
     setActivePage("home");
   };

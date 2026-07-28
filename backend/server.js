@@ -33,7 +33,7 @@ app.get("/", (req, res) => {
 app.post("/api/register", async (req, res) => {
   try {
     const { fullName, email, password } = req.body;
-    console.log("Received registration data:", req.body); // Debugging line
+    // console.log("Received registration data:", req.body); // Debugging line
     const user = new User({ fullName, email, password: password });
     await user.save();
     res.status(200).json({ message: "User registered successfully" });
@@ -45,7 +45,7 @@ app.post("/api/register", async (req, res) => {
 app.post("/api/login", async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log("Received login data:", req.body); // Debugging line
+    // console.log("Received login data:", req.body); // Debugging line
     const user = await User.findOne({ email, password: password });
     if (!user) {
       return res.status(404).json({ message: "User not found" });

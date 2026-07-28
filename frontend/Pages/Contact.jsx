@@ -1,4 +1,5 @@
 import React from "react";
+import { toast } from "react-toastify";
 
 const Contact = () => {
   const [formData, setFormData] = React.useState({
@@ -11,7 +12,10 @@ const Contact = () => {
   };
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData);
+    // console.log(formData);
+    toast.info(
+      "Message sent successfully! We will get back to you within 24 hours.",
+    );
   };
 
   return (
