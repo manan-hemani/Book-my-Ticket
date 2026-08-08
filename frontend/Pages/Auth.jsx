@@ -1,7 +1,8 @@
 // import React, { useState } from "react";
 import { useState } from "react";
-import { registerUser, loginUser } from "../api";
+// import { registerUser, loginUser } from "../api";
 import { toast } from "react-toastify";
+import axios from "axios";
 
 const Auth = ({ setCurrentUser, setActivePage }) => {
   const [activeTab, setActiveTab] = useState("login");
@@ -15,31 +16,65 @@ const Auth = ({ setCurrentUser, setActivePage }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleRegister = async (e) => {
+  // const handleRegister = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const result = await registerUser({
+  //       fullName: formData.fullName,
+  //       email: formData.email,
+  //       password: formData.password,
+  //     });
+  //     toast.success(result.message);
+  //     setActiveTab("login");
+  //   } catch (err) {
+  //     toast.error(err.response?.data?.message || "Registration failed");
+  //   }
+  // };
+
+  const handleRegisterFS = async (e) => {
     e.preventDefault();
     try {
-      const result = await registerUser({
+      const result = await axios.post("http://localhost:3000/api/fsusers", {
         fullName: formData.fullName,
         email: formData.email,
         password: formData.password,
       });
-      toast.success(result.message);
+      toast.success(result.data.message);
       setActiveTab("login");
     } catch (err) {
       toast.error(err.response?.data?.message || "Registration failed");
     }
   };
 
-  const handleLogin = async (e) => {
+  // const handleLogin = async (e) => {
+  //   e.preventDefault();
+  //   try {
+  //     const result = await loginUser({
+  //       email: formData.email,
+  //       password: formData.password,
+  //     });
+  //     setCurrentUser(result.user);
+  //     toast.success(result.message);
+  //     setActivePage("home");
+  //   } catch (err) {
+  //     toast.error(err.response?.data?.message || "Login failed");
+  //   }
+  // };
+
+  const handleLoginFS = async (e) => {
     e.preventDefault();
     try {
-      const result = await loginUser({
-        email: formData.email,
-        password: formData.password,
-      });
-      setCurrentUser(result.user);
-      toast.success(result.message);
-      setActivePage("home");
+      const result = await axios.post(
+        "http://localhost:3000/api/fsusers/login",
+        {
+          email: formData.email,
+          password: formData.password,
+        },
+      );
+      // setCurrentUser(result.user);
+      // toast.success(result.message);
+      toast.success(result.data.message);
+      // setActivePage("home");
     } catch (err) {
       toast.error(err.response?.data?.message || "Login failed");
     }
@@ -72,7 +107,7 @@ const Auth = ({ setCurrentUser, setActivePage }) => {
             </button>
           </div>
           {activeTab === "login" ? (
-            <form className="flex flex-col gap-3" onSubmit={handleLogin}>
+            <form className="flex flex-col gap-3" onSubmit={handleLoginFS}>
               <label htmlFor="loginEmail" className="font-medium text-gray-700">
                 Email
               </label>
@@ -115,7 +150,7 @@ const Auth = ({ setCurrentUser, setActivePage }) => {
               </div>
             </form>
           ) : (
-            <form className="flex flex-col gap-3" onSubmit={handleRegister}>
+            <form className="flex flex-col gap-3" onSubmit={handleRegisterFS}>
               <label
                 htmlFor="registrationName"
                 className="font-medium text-gray-700"
