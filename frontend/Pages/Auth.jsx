@@ -1,10 +1,9 @@
-// import React, { useState } from "react";
 import { useState } from "react";
-// import { registerUser, loginUser } from "../api";
+import { registerUser, loginUser } from "../api";
 import { toast } from "react-toastify";
-import axios from "axios";
 
 const Auth = ({ setCurrentUser, setActivePage }) => {
+  const [loading, setLoading] = useState(false);
   const [activeTab, setActiveTab] = useState("login");
   const [formData, setFormData] = useState({
     fullName: "",
@@ -16,67 +15,42 @@ const Auth = ({ setCurrentUser, setActivePage }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  // const handleRegister = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const result = await registerUser({
-  //       fullName: formData.fullName,
-  //       email: formData.email,
-  //       password: formData.password,
-  //     });
-  //     toast.success(result.message);
-  //     setActiveTab("login");
-  //   } catch (err) {
-  //     toast.error(err.response?.data?.message || "Registration failed");
-  //   }
-  // };
-
-  const handleRegisterFS = async (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
-      const result = await axios.post("http://localhost:3000/api/fsusers", {
+      const result = await registerUser({
         fullName: formData.fullName,
         email: formData.email,
         password: formData.password,
       });
-      toast.success(result.data.message);
+      toast.success(result.message);
+
       setActiveTab("login");
     } catch (err) {
+      console.error(err);
       toast.error(err.response?.data?.message || "Registration failed");
+    } finally {
+      setLoading(false);
     }
   };
 
-  // const handleLogin = async (e) => {
-  //   e.preventDefault();
-  //   try {
-  //     const result = await loginUser({
-  //       email: formData.email,
-  //       password: formData.password,
-  //     });
-  //     setCurrentUser(result.user);
-  //     toast.success(result.message);
-  //     setActivePage("home");
-  //   } catch (err) {
-  //     toast.error(err.response?.data?.message || "Login failed");
-  //   }
-  // };
-
-  const handleLoginFS = async (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
-      const result = await axios.post(
-        "http://localhost:3000/api/fsusers/login",
-        {
-          email: formData.email,
-          password: formData.password,
-        },
-      );
-      // setCurrentUser(result.user);
-      // toast.success(result.message);
-      toast.success(result.data.message);
-      // setActivePage("home");
+      const result = await loginUser({
+        email: formData.email,
+        password: formData.password,
+      });
+      setCurrentUser(result.user);
+      localStorage.setItem("currentUser", JSON.stringify(result.user));
+      toast.success(result.message);
+      setActivePage("home");
     } catch (err) {
       toast.error(err.response?.data?.message || "Login failed");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -107,7 +81,7 @@ const Auth = ({ setCurrentUser, setActivePage }) => {
             </button>
           </div>
           {activeTab === "login" ? (
-            <form className="flex flex-col gap-3" onSubmit={handleLoginFS}>
+            <form className="flex flex-col gap-3" onSubmit={handleLogin}>
               <label htmlFor="loginEmail" className="font-medium text-gray-700">
                 Email
               </label>
@@ -141,16 +115,26 @@ const Auth = ({ setCurrentUser, setActivePage }) => {
                 >
                   Forgot password?
                 </a>
-                <button
-                  type="submit"
-                  className="w-full bg-amber-500 text-white py-2 rounded-lg font-semibold hover:bg-amber-600"
-                >
-                  Login
-                </button>
+                {loading ? (
+                  <button
+                    type="submit"
+                    disabled
+                    className="w-full bg-amber-500 text-white py-2 rounded-lg font-semibold hover:bg-amber-600"
+                  >
+                    Login
+                  </button>
+                ) : (
+                  <button
+                    type="submit"
+                    className="w-full bg-amber-500 text-white py-2 rounded-lg font-semibold hover:bg-amber-600"
+                  >
+                    Login
+                  </button>
+                )}
               </div>
             </form>
           ) : (
-            <form className="flex flex-col gap-3" onSubmit={handleRegisterFS}>
+            <form className="flex flex-col gap-3" onSubmit={handleRegister}>
               <label
                 htmlFor="registrationName"
                 className="font-medium text-gray-700"
@@ -202,29 +186,22 @@ const Auth = ({ setCurrentUser, setActivePage }) => {
                 className="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-amber-500"
               />
 
-              <label
-                htmlFor="registrationConfirmPassword"
-                className="font-medium text-gray-700"
-              >
-                Confirm Password
-              </label>
-              <input
-                id="registrationConfirmPassword"
-                type="password"
-                placeholder="Enter your password again"
-                required
-                className="border border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-amber-500"
-              />
-              <small className="text-red-500 text-xs hidden">
-                Passwords do not match.
-              </small>
-
-              <button
-                type="submit"
-                className="w-full bg-amber-500 text-white py-2 rounded-lg font-semibold hover:bg-amber-600"
-              >
-                Create Account
-              </button>
+              {loading ? (
+                <button
+                  type="submit"
+                  disabled
+                  className="w-full bg-amber-500 text-white py-2 rounded-lg font-semibold hover:bg-amber-600"
+                >
+                  Create Account
+                </button>
+              ) : (
+                <button
+                  type="submit"
+                  className="w-full bg-amber-500 text-white py-2 rounded-lg font-semibold hover:bg-amber-600"
+                >
+                  Create Account
+                </button>
+              )}
             </form>
           )}
         </div>

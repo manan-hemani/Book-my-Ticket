@@ -1,7 +1,7 @@
 // import React from 'react'
 import { useState, useEffect } from "react";
 import { getUser, updateUser, deleteUser } from "../api";
-import {toast} from "react-toastify";
+import { toast } from "react-toastify";
 
 const Profile = ({ currentUser, setCurrentUser, setActivePage }) => {
   const [formData, setFormData] = useState({
@@ -46,7 +46,7 @@ const Profile = ({ currentUser, setCurrentUser, setActivePage }) => {
       <section id="profile" className="page py-10 px-4">
         <div className="max-w-md mx-auto bg-white p-6 rounded shadow">
           <h2 className="text-xl font-bold mb-4">User Profile</h2>
-          <label for="profileName" className="font-medium text-gray-700">
+          <label htmlFor="profileName" className="font-medium text-gray-700">
             Name
           </label>
           <input
@@ -57,7 +57,7 @@ const Profile = ({ currentUser, setCurrentUser, setActivePage }) => {
             type="text"
             className="border border-gray-300 rounded p-2 w-full mb-3 focus:outline-none focus:ring-2 focus:ring-amber-500"
           />
-          <label for="profileEmail" className="font-medium text-gray-700">
+          <label htmlFor="profileEmail" className="font-medium text-gray-700">
             Email
           </label>
           <input
@@ -68,7 +68,7 @@ const Profile = ({ currentUser, setCurrentUser, setActivePage }) => {
             disabled
             className="border border-gray-300 rounded p-2 w-full mb-3 bg-gray-100 text-gray-500 cursor-not-allowed"
           />
-          <label for="currentPass" className="font-medium text-gray-700">
+          <label htmlFor="currentPass" className="font-medium text-gray-700">
             Current Password
           </label>
           <input
@@ -79,7 +79,7 @@ const Profile = ({ currentUser, setCurrentUser, setActivePage }) => {
             onChange={handleChange}
             className="border border-gray-300 rounded p-2 w-full mb-3 focus:outline-none focus:ring-2 focus:ring-amber-500"
           />
-          <label for="newPass" className="font-medium text-gray-700">
+          <label htmlFor="newPass" className="font-medium text-gray-700">
             New Password
           </label>
           <input
@@ -101,6 +101,16 @@ const Profile = ({ currentUser, setCurrentUser, setActivePage }) => {
             className="mt-4 w-full bg-red-500 text-white py-2 rounded font-semibold cursor-pointer hover:bg-red-600"
           >
             Delete Account
+          </button>
+          <button
+            onClick={() => {
+              localStorage.removeItem("currentUser");
+              setCurrentUser(null);
+              setActivePage("home");
+            }}
+            className="mt-4 w-full bg-gray-500 text-white py-2 rounded font-semibold cursor-pointer hover:bg-gray-600"
+          >
+            Logout
           </button>
         </div>
       </section>

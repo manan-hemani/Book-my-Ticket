@@ -1,5 +1,5 @@
 import "./App.css";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 import Home from "../Pages/Home";
 import About from "../Pages/About";
@@ -13,6 +13,15 @@ import Profile from "../Pages/Profile";
 function App() {
   const [activePage, setActivePage] = useState("home");
   const [currentUser, setCurrentUser] = useState(null);
+  useEffect(() => {
+    const storedUser = localStorage.getItem("currentUser");
+    if (storedUser) {
+      setTimeout(() => {
+        setCurrentUser(JSON.parse(storedUser));
+      }, 0);
+    }
+  }, []);
+
   const renderPage = () => {
     switch (activePage) {
       case "home":

@@ -1,5 +1,5 @@
 // import React from "react";
-import { useState } from "react";
+import { useState} from "react";
 import logo from "../assets/logo.png";
 
 const Navbar = ({ setActivePage, currentUser }) => {
